@@ -3,29 +3,29 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require('./routes/auth');
-const taskRoutes = require('./routes/tasks');
-
 const app = express();
 
-// Middleware
-// Middleware
-const corsOptions = {
+// Middleware - CRITICAL: Order matters!
+app.use(cors({
   origin: [
-    "http://localhost:3000", // local dev frontend
-    "https://task-manager-mern-brown.vercel.app" // vercel prod frontend
+    'https://task-manager-mern-brown.vercel.app',
+    'http://localhost:3000'
   ],
   credentials: true
-};
-app.use(cors(corsOptions));
+}));
 
+// ✅ THIS MUST COME BEFORE ROUTES
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskmanager')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-// Routes
+// Routes - THESE COME AFTER express.json()
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks');
+
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
