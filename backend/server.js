@@ -11,10 +11,14 @@ const app = express();
 // Middleware
 // Middleware
 const corsOptions = {
-  origin: 'https://task-manager-mern-brown.vercel.app' 
+  origin: [
+    "http://localhost:3000", // local dev frontend
+    "https://task-manager-mern-brown.vercel.app" // vercel prod frontend
+  ],
+  credentials: true
 };
 app.use(cors(corsOptions));
-app.use(express.json());
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskmanager')
