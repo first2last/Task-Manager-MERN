@@ -9,7 +9,11 @@ const taskRoutes = require('./routes/tasks');
 const app = express();
 
 // Middleware
-app.use(cors());
+// Middleware
+const corsOptions = {
+  origin: 'https://task-manager-mern-brown.vercel.app' 
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB
